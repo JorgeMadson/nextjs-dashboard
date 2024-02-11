@@ -8,8 +8,16 @@ import {
   LatestInvoiceRaw,
   User,
   Revenue,
+  Dashboard,
 } from './definitions';
 import { formatCurrency } from './utils';
+
+export async function fetchDashboardByUserId(user_email: string) {
+  console.log('Fetching dashboard data...');
+  const data = await sql<Dashboard>`SELECT * from dashboards
+  WHERE user_email = ${user_email}`
+  return data.rows;
+}
 
 export async function fetchRevenue() {
   // Add noStore() here to prevent the response from being cached.
@@ -20,7 +28,7 @@ export async function fetchRevenue() {
     // Don't do this in production :)
 
     console.log('Fetching revenue data...');
-    await new Promise((resolve, error)=> setTimeout(resolve, 3000));
+    // await new Promise((resolve, error)=> setTimeout(resolve, 3000));
 
     const data = await sql<Revenue>`SELECT * FROM revenue`;
 

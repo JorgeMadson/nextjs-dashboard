@@ -160,14 +160,41 @@ async function seedRevenue(client) {
   }
 }
 
+async function seedDashboard(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+    // Create the "dashboards" table if it doesn't exist
+    const createTable = await client.sql`
+    CREATE TABLE IF NOT EXISTS dashboards (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    user_email VARCHAR(255) NOT NULL,
+    link VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    date DATE NOT NULL
+  );
+`;
+
+  // Insert some value in default user
+  const insertDashboards = await client.sql`
+  INSERT INTO dashboards (user_email, link, name, date) VALUES
+('user@nextmail.com', 'https://jorgemadson.github.io', 'Dashboard 1', '2024-02-11'),
+('user@nextmail.com', 'https://jorgetalita.com', 'Dashboard 2', '2024-02-11'),
+('user@nextmail.com', 'http://google.com', 'Dashboard 3', '2024-02-11');
+
+  `;
+  console.log(`Created "dashboard" table`);
+} catch (error) {
+  console.error('Error seeding dashboard', error);
+  throw error;
+ }
+}
+
 async function main() {
   const client = await db.connect();
 
   await seedUsers(client);
-  await seedCustomers(client);
-  await seedInvoices(client);
-  await seedRevenue(client);
-
+  await seedDashboard(client);
   await client.end();
 }
 

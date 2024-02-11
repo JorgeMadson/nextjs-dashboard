@@ -2,6 +2,15 @@
 // It describes the shape of the data, and what data type each property should accept.
 // For simplicity of teaching, we're manually defining these types.
 // However, these types are generated automatically if you're using an ORM such as Prisma.
+
+export type Dashboard = {
+  id: string;
+  user_email: string;
+  name: string;
+  link: string;
+  date: string;
+}
+
 export type User = {
   id: string;
   name: string;
@@ -18,7 +27,7 @@ export type Customer = {
 
 export type Invoice = {
   id: string;
-  customer_id: string;
+  user_email: string;
   amount: number;
   date: string;
   // In TypeScript, this is called a string union type.
