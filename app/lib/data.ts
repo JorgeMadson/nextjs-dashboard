@@ -12,7 +12,7 @@ import {
 } from './definitions';
 import { formatCurrency } from './utils';
 
-export async function fetchDashboardByUserId(user_email: string) {
+export async function fetchDashboardByUserEmail(user_email: string) {
   console.log('Fetching dashboard data...');
   const data = await sql<Dashboard>`SELECT * from dashboards
   WHERE user_email = ${user_email}`
