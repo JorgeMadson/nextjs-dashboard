@@ -8,6 +8,7 @@ import { CardsSkeleton, LatestInvoicesSkeleton, RevenueChartSkeleton } from '@/a
 import { Metadata } from 'next';
 import { auth } from "@/auth";
 import SideNav from "@/app/ui/dashboard/sidenav";
+import NewDashboard from "@/app/ui/dashboard/NewDashboards";
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -17,23 +18,15 @@ export default async function Page() {
   const session = await auth();
   const user = session?.user;
   let dashboards;
-  let firstLink;
+
   //fetch all dashboards
   if (user?.email) {
     dashboards = await fetchDashboardByUserEmail(user?.email)
   }
-  if (dashboards) {
-    firstLink = dashboards[0].link
-  }
 
   return (
     <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
-      <div className="w-full flex-none md:w-64">
-        <SideNav />
-      </div>
-      <div className="flex-grow p-6 md:overflow-y-auto ">
-        <iframe className="w-full h-full" src={firstLink}></iframe>
-      </div>
+      <NewDashboard dashboards={dashboards} />
     </div>
   );
 }
